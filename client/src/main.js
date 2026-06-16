@@ -154,7 +154,7 @@ function startPractice() {
   let intro = `Welcome! Start introducing yourself in ${lang}.`;
 
   if (scenario) {
-    intro = `Scenario: ${scenario}. Begin the conversation in ${lang}.`;
+    intro = `Scenario: ${scenario}. Begin the conversation.`;
   }
 
   addMessage("assistant", intro);

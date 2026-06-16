@@ -31,7 +31,6 @@ function checkEnvironment() {
   }
 
   console.log("AI Model:", process.env.AI_MODEL);
-
   console.log("AI URL:", process.env.AI_URL);
 }
 
@@ -74,14 +73,12 @@ function buildSystemPrompt({
       - Explain corrections briefly.
       `;
       break;
-
     case "Intermediate":
       difficultyRules = `
       - Use moderate vocabulary.
       - Introduce new grammar naturally.
       `;
       break;
-
     case "Advanced":
       difficultyRules = `
       - Use advanced vocabulary.
@@ -102,59 +99,78 @@ function buildSystemPrompt({
     "Arabic",
   ];
 
-  const pronunciationRule = nonLatinLanguages.includes(language)
+  const isNonLatin = nonLatinLanguages.includes(language);
+
+  // Precise rule tweak for layout block enforcement across distinct scripts
+  let pronunciationInstructions = "";
+
+  if (language === "Chinese") {
+    pronunciationInstructions = `For EVERY sentence you write, you MUST immediately follow it with its proper Hanyu Pinyin with TONE MARKS on the very next line. Do not bunch sentences together.
+
+      EXACT LAYOUT STRUCTURE:
+      [Sentence 1 in Chinese Characters]
+      ([Pinyin 1 with Tone Marks])
+
+      CORRECT EXAMPLE:
+      你好！
+      (Nǐ hǎo!)`;
+  } else if (language === "Japanese") {
+    pronunciationInstructions = `For EVERY sentence you write, you MUST write the first line entirely in native Japanese script (Kanji, Hiragana, and Katakana), and the second line in standard Romaji wrapped in parentheses. 
+      NEVER use English phonics or broken spellings (like "des-oo kah"). Use standard Hepburn Romaji.
+
+      EXACT LAYOUT STRUCTURE:
+      [Sentence 1 in Kanji/Hiragana/Katakana]
+      ([Romaji 1])
+
+      CORRECT EXAMPLE:
+      こんにちは！
+      (Konnichiwa!)`;
+  } else if (language === "Korean") {
+    pronunciationInstructions = `For EVERY sentence you write, you MUST write the first line entirely in native Korean Hangul script, and the second line in natural, standard Revised Romanization wrapped in parentheses. 
+      NEVER split syllables with random hyphens (like "has-i-nay-yo"). Use fluent pronunciation.
+
+      EXACT LAYOUT STRUCTURE:
+      [Sentence 1 in Korean Hangul]
+      ([Revised Romanization 1])
+
+      CORRECT EXAMPLE:
+      안녕하세요!
+      (Annyeonghaseyo!)`;
+  } else if (language === "Arabic") {
+    pronunciationInstructions = `For EVERY sentence you write, you MUST write the first line entirely in native Arabic script, and the second line in standard English-letter Romanization wrapped in parentheses.
+      CRITICAL: NEVER use chat numbers (like 3, 7, 2, 5) to represent Arabic letters. Use standard Latin characters only.
+
+      EXACT LAYOUT STRUCTURE:
+      [Sentence 1 in Arabic Script]
+      ([Clean Romanization 1])
+
+      CORRECT EXAMPLE:
+      مَرْحَبًا!
+      (Marhaban!)
+      كَيْفَ حَالُك؟
+      (Kayfa haluk?)`;
+  } else {
+    pronunciationInstructions = `For EVERY sentence you write, you MUST immediately follow it with its English-letter pronunciation on the very next line. Do not bunch multiple native sentences together on one line.
+
+      EXACT LAYOUT STRUCTURE:
+      [Sentence 1 in Native Script]
+      ([Pronunciation 1])
+
+      CORRECT EXAMPLE:
+      வணக்கம்!
+      (Vanakkam!)`;
+  }
+
+  const pronunciationRule = isNonLatin
     ? `
       ========================
       MANDATORY OUTPUT FORMAT
       ========================
+      The user may type using English letters (transliteration).
+      You MUST ALWAYS reply in native script (${language}).
+      NEVER mirror or echo the user's input. 
 
-      IMPORTANT:
-      The user may type using English letters (romaji/transliteration).
-
-      You MUST ALWAYS reply in native script.
-
-      NEVER mirror the user's Latin script.
-
-      For every sentence:
-
-      1. Write the sentence in native script.
-      2. On the next line provide pronunciation in English letters.
-      3. Never provide English translation unless help is requested.
-
-      CORRECT FORMAT:
-
-      こんにちは！
-      (Konnichiwa!)
-
-      私はポリーです。
-      (Watashi wa Porī desu.)
-
-      何を勉強していますか？
-      (Nani o benkyō shite imasu ka?)
-
-      INVALID FORMAT:
-
-      Konnichiwa!
-      こんにちは！
-
-      INVALID FORMAT:
-
-      Konnichiwa! Watashi wa Porī desu.
-
-      Do not use IPA.
-      Do not use phonetic symbols.
-      Use natural pronunciation.
-
-      Preserve user names exactly.
-      Never change names.
-
-      If the user writes:
-      "Konnichiwa"
-
-      You still reply:
-
-      こんにちは！
-      (Konnichiwa!)
+      ${pronunciationInstructions}
     `
     : "";
 
@@ -187,36 +203,31 @@ function buildSystemPrompt({
   }
 
   return `
-    You are Polly, an expert language tutor.
+    You are an actor completely immersed in a real-world scenario. You must never break character or act like an AI language tutor.
+    Only when a scenario is not mentioned, should you act like an AI Language tutor.
 
     Target language: ${language}
     Student level: ${level}
 
-    GLOBAL RULES:
+    CRITICAL ROLEPLAY RULE:
+    - You are NOT a teacher or a chatbot. Do NOT ask why the user is learning the language, and do NOT introduce yourself as an AI.
+    - Respond directly, naturally, and exclusively from the perspective of your character within the scenario.
 
-    - ALWAYS respond entirely in ${language}.
-    - Never use another language.
-    - Never translate into English unless help is requested.
+    CRITICAL CONVERSATION RULES:
+    - NEVER just repeat, echo, or rephrase what the user just said to you.
     - Keep replies under 3 short sentences.
-    - Ask follow-up questions.
-    - Preserve user names exactly.
-    - Never change or "correct" names.
+    - ALWAYS end your turn with a natural, scenario-based follow-up question or action to keep the roleplay scenario moving forward.
+    - Preserve user names exactly. Never change or "correct" names.
 
     CORRECTIONS:
-
     When correcting:
-
     1. Quote the corrected sentence.
     2. Explain briefly in ${language}.
     3. Continue naturally.
-
     The correction itself MUST be entirely in ${language}.
-    Never use words or phrases from other languages.
 
     LANGUAGE PURITY RULE:
-
-    Every response must be written entirely in ${language}.
-    Do not use grammar terms from any other language.
+    Every response must be written in ${language}. Do not use grammar terms from any other language. ${isNonLatin ? "(Except for the required English-letter pronunciation lines)." : ""}
 
     ${difficultyRules}
 
@@ -225,11 +236,11 @@ function buildSystemPrompt({
     ${
       scenario
         ? `
-    SCENARIO:
+    CURRENT ROLEPLAY PERSONA & SCENARIO:
     ${scenario}
-
-    Remain within this scenario unless the user changes topics.
-  `
+    
+    CRITICAL MANDATE: Immediately launch right into this scene as your designated character. Do not introduce the scene, do not ask introductory student questions. Speak, react, and ask questions *only* as this character would in real life.
+    `
         : ""
     }
 `;
@@ -277,7 +288,6 @@ app.post("/api/chat", async (req, res) => {
     );
 
     let lastAssistantMessage = "";
-
     for (let i = messages.length - 2; i >= 0; i--) {
       if (messages[i].role === "assistant") {
         lastAssistantMessage = messages[i].content;
@@ -293,20 +303,64 @@ app.post("/api/chat", async (req, res) => {
       lastAssistantMessage,
     });
 
+    // 1. Slurp the last 20 messages
+    const conversationHistory = messages.slice(-20);
+
+    // 2. Build the message array for OpenAI
+    const apiMessages = [
+      {
+        role: "system",
+        content: systemPrompt,
+      },
+      ...conversationHistory,
+    ];
+
+    // 3. FORCE PATTERN BREAK: Strict structural and script reinforcement
+    // Global Rule: Force scenario identity immediately right before generation for ALL languages
+    if (scenario && !helpRequested) {
+      apiMessages.push({
+        role: "system",
+        content: `CRITICAL IDENTITY MANDATE: You are actively acting out this scenario: "${scenario}". You must speak, ask professional questions, and think exactly like this character. Do not break character or drift into generic chit-chat.`,
+      });
+    }
+
+    // Script Rule: Force line-by-line pronunciation constraints ONLY for non-Latin scripts
+    const nonLatinLanguages = [
+      "Japanese",
+      "Chinese",
+      "Hindi",
+      "Telugu",
+      "Tamil",
+      "Greek",
+      "Russian",
+      "Korean",
+      "Arabic",
+    ];
+
+    if (nonLatinLanguages.includes(language) && !helpRequested) {
+      apiMessages.push({
+        role: "system",
+        content: `LAYOUT MANDATE: You are strictly FORBIDDEN from writing two sentences on the same line, or mixing native script and English letters on the same line.
+        
+        You MUST follow this exact 4-line layout format for your response:
+        Line 1: [First sentence completely in Native Script, ending with punctuation]
+        Line 2: ([Standard English-letter pronunciation of sentence 1])
+        Line 3: [Second sentence completely in Native Script, ending with punctuation]
+        Line 4: ([Standard English-letter pronunciation of sentence 2])
+        
+        CRITICAL HINDI EXAMPLE:
+        नमस्ते!
+        (Namaste!)
+        आपका नाम क्या है?
+        (Aapka naam kya hai?)`,
+      });
+    }
+
     const response = await openai.chat.completions.create({
       model: process.env.AI_MODEL,
-
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt,
-        },
-
-        ...messages.slice(-20),
-      ],
-
-      temperature: 0.4,
-      max_tokens: 350,
+      messages: apiMessages,
+      temperature: 0.5,
+      max_tokens: 600,
     });
 
     let reply = response.choices?.[0]?.message?.content;
@@ -316,17 +370,12 @@ app.post("/api/chat", async (req, res) => {
     }
 
     if (!reply || !reply.trim()) {
-      console.log(JSON.stringify(response, null, 2));
-
       reply = "Sorry, I couldn't generate a response.";
     }
 
-    res.json({
-      reply,
-    });
+    res.json({ reply });
   } catch (err) {
     console.error("AI Error:", err);
-
     res.status(500).json({
       error: "Something went wrong while contacting the AI service.",
     });
