@@ -1,0 +1,25 @@
+{
+  "name": "polyglot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "vite --config client/vite.config.js",
+    "server": "node --watch server/server.js",
+    "build": "vite build --config client/vite.config.js",
+    "preview": "vite preview --config client/vite.config.js",
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dompurify": "^3.4.10",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
+    "marked": "^18.0.5",
+    "openai": "^6.42.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "vite": "^7.3.5"
+  }
+}

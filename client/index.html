@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./styles/styles.css" />
+
+    <title>PolyGlot AI Tutor</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- HERO -->
+      <header class="hero">
+        <img src="/assets/worldmap.png" class="worldmap" alt="World Map" />
+
+        <img src="/assets/parrot.png" class="parrot" alt="Parrot" />
+
+        <div class="hero-content">
+          <h1 class="logo-text">PolyGlot AI</h1>
+
+          <p class="tagline">Learn languages through AI conversations.</p>
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-container">
+        <!-- LEFT PANEL -->
+        <section class="control-panel">
+          <h2>Practice Settings</h2>
+
+          <!-- LANGUAGE -->
+          <div class="field">
+            <label for="language"> Target Language </label>
+
+            <select id="language">
+              <option value="Spanish">Spanish</option>
+
+              <option value="French">French</option>
+
+              <option value="German">German</option>
+
+              <option value="Japanese">Japanese</option>
+
+              <option value="Chinese">Chinese</option>
+
+              <option value="Hindi">Hindi</option>
+
+              <option value="Telugu">Telugu</option>
+
+              <option value="Greek">Greek</option>
+
+              <option value="Russian">Russian</option>
+
+              <option value="English">English</option>
+            </select>
+          </div>
+
+          <!-- LEVEL -->
+          <div class="field">
+            <label for="level"> Proficiency Level </label>
+
+            <select id="level">
+              <option value="Beginner">Beginner</option>
+
+              <option value="Intermediate">Intermediate</option>
+
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+
+          <!-- SCENARIO -->
+          <div class="field">
+            <label for="scenario"> Scenario (Optional) </label>
+
+            <input
+              id="scenario"
+              type="text"
+              placeholder="e.g. Ordering food at a restaurant"
+            />
+          </div>
+
+          <!-- TIPS -->
+          <div class="tips-box">
+            <h3>Tips</h3>
+
+            <ul>
+              <li>Mistakes will be corrected politely.</li>
+
+              <li>Type <b>help</b> or <b> meaning </b> for English explanations.</li>
+
+              <li>Use 🔊 to hear pronunciation.</li>
+            </ul>
+          </div>
+
+          <div class="button-group">
+            <button id="start-chat">Start Practice</button>
+
+            <button id="reset-chat">Reset Chat</button>
+          </div>
+        </section>
+
+        <!-- CHAT -->
+        <section class="chat-section">
+          <div class="chat-header">
+            <h2>Conversation</h2>
+
+            <span id="status"> Ready </span>
+          </div>
+
+          <div id="chat-messages">
+            <div class="empty-state">
+              Select a language and click
+              <strong> Start Practice </strong>.
+            </div>
+          </div>
+
+          <div class="chat-input">
+            <input
+              type="text"
+              id="user-message"
+              placeholder="Type your message..."
+              autocomplete="off"
+            />
+
+            <button id="send-btn">Send</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
