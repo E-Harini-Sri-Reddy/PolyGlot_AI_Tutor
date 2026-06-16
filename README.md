@@ -12,19 +12,19 @@ PolyGlot AI is an interactive language-learning web application that allows user
 
 Practice conversations in:
 
-* Spanish
-* French
-* German
-* Japanese
-* Chinese
-* Hindi
-* Telugu
-* Tamil
-* Greek
-* Russian
-* Korean
-* Arabic
-* English
+- Spanish
+- French
+- German
+- Japanese
+- Chinese
+- Hindi
+- Telugu
+- Tamil
+- Greek
+- Russian
+- Korean
+- Arabic
+- English
 
 ---
 
@@ -32,11 +32,11 @@ Practice conversations in:
 
 Polly acts as an intelligent language tutor that:
 
-* Responds only in the target language
-* Corrects mistakes politely
-* Encourages conversation
-* Adapts to proficiency level
-* Supports contextual scenarios
+- Responds only in the target language
+- Corrects mistakes politely
+- Encourages conversation
+- Adapts to proficiency level
+- Supports contextual scenarios
 
 ---
 
@@ -91,11 +91,11 @@ what does that mean?
 
 to receive:
 
-* English translation
-* Word-by-word explanation
-* Pronunciation
-* Suggested responses
-* Cultural notes
+- English translation
+- Word-by-word explanation
+- Pronunciation
+- Suggested responses
+- Cultural notes
 
 ---
 
@@ -103,12 +103,12 @@ to receive:
 
 Practice real-world situations such as:
 
-* Meeting a friend
-* Ordering food
-* Job interviews
-* Traveling abroad
-* Shopping
-* Classroom conversations
+- Meeting a friend
+- Ordering food
+- Job interviews
+- Traveling abroad
+- Shopping
+- Classroom conversations
 
 Example:
 
@@ -122,11 +122,11 @@ Scenario: Ordering food at a restaurant
 
 Choose how the AI should speak:
 
-* Casual
-* Friendly
-* Formal
-* Professional
-* Polite
+- Casual
+- Friendly
+- Formal
+- Professional
+- Polite
 
 Example:
 
@@ -152,9 +152,9 @@ Japanese:
 
 Adjust conversation difficulty:
 
-* Beginner
-* Intermediate
-* Advanced
+- Beginner
+- Intermediate
+- Advanced
 
 ---
 
@@ -164,9 +164,9 @@ Listen to AI responses with built-in browser speech synthesis.
 
 Features:
 
-* Inline speaker button (🔊)
-* Language-specific voices
-* Pronunciation playback
+- Inline speaker button (🔊)
+- Language-specific voices
+- Pronunciation playback
 
 ---
 
@@ -174,21 +174,21 @@ Features:
 
 ### Frontend
 
-* HTML5
-* CSS3
-* Vanilla JavaScript
-* Vite
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Vite
 
 ### Backend
 
-* Node.js
-* Express.js
-* OpenAI SDK
+- Node.js
+- Express.js
+- OpenAI SDK
 
 ### AI Provider
 
-* Groq API
-* Llama 3.1 8B Instant
+- Groq API
+- Llama 3.1 8B Instant
 
 ---
 
@@ -279,14 +279,14 @@ npm start
 
 ## 🎯 Future Enhancements
 
-* User authentication
-* Progress tracking
-* Vocabulary flashcards
-* Achievements and streaks
-* Voice input (speech-to-text)
-* Pronunciation scoring
-* AI-generated quizzes
-* Conversation history export
+- User authentication
+- Progress tracking
+- Vocabulary flashcards
+- Achievements and streaks
+- Voice input (speech-to-text)
+- Pronunciation scoring
+- AI-generated quizzes
+- Conversation history export
 
 ---
 
@@ -321,10 +321,10 @@ Developed by **Harini Sri Reddy**
 
 Built as an AI-powered language learning project exploring:
 
-* Conversational AI
-* Prompt Engineering
-* Full Stack Development
-* Natural Language Processing
-* Human-Computer Interaction
+- Conversational AI
+- Prompt Engineering
+- Full Stack Development
+- Natural Language Processing
+- Human-Computer Interaction
 
 ---
